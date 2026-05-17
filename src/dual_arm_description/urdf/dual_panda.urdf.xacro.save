@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<robot name="dual_panda" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Include Panda -->
+  <xacro:include filename="$(find moveit_resources_panda_description)/urdf/panda.urdf.xacro"/>
+
+  <!-- WORLD FRAME -->
+  <link name="world"/>
+
+  <!-- LEFT ARM -->
+  <xacro:panda prefix="left_"/>
+
+  <joint name="left_panda_mount" type="fixed">
+    <parent link="world"/>
+    <child link="left_link0"/>
+    <origin xyz="0 0.25 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- RIGHT ARM -->
+  <xacro:panda prefix="right_"/>
+
+  <joint name="right_panda_mount" type="fixed">
+    <parent link="world"/>
+    <child link="right_link0"/>
+    <origin xyz="0 -0.25 0" rpy="0 0 0"/>
+  </joint>
+
+</robot>
+

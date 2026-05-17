@@ -1,0 +1,127 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="dual_panda">
+  <xacro:macro name="panda_arm_group" params="prefix group_name">
+    <group name="${group_name}">
+      <chain base_link="${prefix}link0" tip_link="${prefix}hand" />
+    </group>
+    <group_state name="ready" group="${group_name}">
+      <joint name="${prefix}joint1" value="0" />
+      <joint name="${prefix}joint2" value="-0.785" />
+      <joint name="${prefix}joint3" value="0" />
+      <joint name="${prefix}joint4" value="-2.356" />
+      <joint name="${prefix}joint5" value="0" />
+      <joint name="${prefix}joint6" value="1.571" />
+      <joint name="${prefix}joint7" value="0.785" />
+    </group_state>
+    <group_state name="extended" group="${group_name}">
+      <joint name="${prefix}joint1" value="0" />
+      <joint name="${prefix}joint2" value="0" />
+      <joint name="${prefix}joint3" value="0" />
+      <joint name="${prefix}joint4" value="0" />
+      <joint name="${prefix}joint5" value="0" />
+      <joint name="${prefix}joint6" value="1.571" />
+      <joint name="${prefix}joint7" value="0.785" />
+    </group_state>
+    <group_state name="transport" group="${group_name}">
+      <joint name="${prefix}joint1" value="0" />
+      <joint name="${prefix}joint2" value="-0.5599" />
+      <joint name="${prefix}joint3" value="0" />
+      <joint name="${prefix}joint4" value="-2.97" />
+      <joint name="${prefix}joint5" value="0" />
+      <joint name="${prefix}joint6" value="0" />
+      <joint name="${prefix}joint7" value="0.785" />
+    </group_state>
+  </xacro:macro>
+
+  <xacro:macro name="panda_hand_group" params="prefix group_name">
+    <group name="${group_name}">
+      <link name="${prefix}hand" />
+      <link name="${prefix}leftfinger" />
+      <link name="${prefix}rightfinger" />
+      <joint name="${prefix}finger_joint1" />
+      <passive_joint name="${prefix}finger_joint2" />
+    </group>
+  </xacro:macro>
+
+  <xacro:macro name="panda_arm_disable_collisions" params="prefix">
+    <disable_collisions link1="${prefix}link0" link2="${prefix}link1" reason="Adjacent" />
+    <disable_collisions link1="${prefix}link0" link2="${prefix}link2" reason="Never" />
+    <disable_collisions link1="${prefix}link0" link2="${prefix}link3" reason="Never" />
+    <disable_collisions link1="${prefix}link0" link2="${prefix}link4" reason="Never" />
+    <disable_collisions link1="${prefix}link1" link2="${prefix}link2" reason="Adjacent" />
+    <disable_collisions link1="${prefix}link1" link2="${prefix}link3" reason="Never" />
+    <disable_collisions link1="${prefix}link1" link2="${prefix}link4" reason="Never" />
+    <disable_collisions link1="${prefix}link2" link2="${prefix}link3" reason="Adjacent" />
+    <disable_collisions link1="${prefix}link2" link2="${prefix}link4" reason="Never" />
+    <disable_collisions link1="${prefix}link2" link2="${prefix}link6" reason="Never" />
+    <disable_collisions link1="${prefix}link3" link2="${prefix}link4" reason="Adjacent" />
+    <disable_collisions link1="${prefix}link3" link2="${prefix}link5" reason="Never" />
+    <disable_collisions link1="${prefix}link3" link2="${prefix}link6" reason="Never" />
+    <disable_collisions link1="${prefix}link3" link2="${prefix}link7" reason="Never" />
+    <disable_collisions link1="${prefix}link4" link2="${prefix}link5" reason="Adjacent" />
+    <disable_collisions link1="${prefix}link4" link2="${prefix}link6" reason="Never" />
+    <disable_collisions link1="${prefix}link4" link2="${prefix}link7" reason="Never" />
+    <disable_collisions link1="${prefix}link5" link2="${prefix}link6" reason="Adjacent" />
+    <disable_collisions link1="${prefix}link6" link2="${prefix}link7" reason="Adjacent" />
+  </xacro:macro>
+
+  <xacro:macro name="panda_hand_disable_collisions" params="prefix">
+    <disable_collisions link1="${prefix}hand" link2="${prefix}leftfinger" reason="Adjacent" />
+    <disable_collisions link1="${prefix}hand" link2="${prefix}rightfinger" reason="Adjacent" />
+    <disable_collisions link1="${prefix}leftfinger" link2="${prefix}rightfinger" reason="Default" />
+  </xacro:macro>
+
+  <virtual_joint name="world_joint" type="fixed" parent_frame="world" child_link="dual_arm_base_link" />
+
+  <xacro:panda_arm_group prefix="left_panda_" group_name="left_arm" />
+  <xacro:panda_arm_group prefix="right_panda_" group_name="right_arm" />
+
+  <xacro:panda_hand_group prefix="left_panda_" group_name="left_hand" />
+  <xacro:panda_hand_group prefix="right_panda_" group_name="right_hand" />
+
+  <group name="dual_arm">
+    <joint name="left_panda_joint1" />
+    <joint name="left_panda_joint2" />
+    <joint name="left_panda_joint3" />
+    <joint name="left_panda_joint4" />
+    <joint name="left_panda_joint5" />
+    <joint name="left_panda_joint6" />
+    <joint name="left_panda_joint7" />
+    <joint name="right_panda_joint1" />
+    <joint name="right_panda_joint2" />
+    <joint name="right_panda_joint3" />
+    <joint name="right_panda_joint4" />
+    <joint name="right_panda_joint5" />
+    <joint name="right_panda_joint6" />
+    <joint name="right_panda_joint7" />
+  </group>
+
+  <group name="dual_arm_with_hands">
+    <joint name="left_panda_joint1" />
+    <joint name="left_panda_joint2" />
+    <joint name="left_panda_joint3" />
+    <joint name="left_panda_joint4" />
+    <joint name="left_panda_joint5" />
+    <joint name="left_panda_joint6" />
+    <joint name="left_panda_joint7" />
+    <joint name="left_panda_finger_joint1" />
+    <joint name="left_panda_finger_joint2" />
+    <joint name="right_panda_joint1" />
+    <joint name="right_panda_joint2" />
+    <joint name="right_panda_joint3" />
+    <joint name="right_panda_joint4" />
+    <joint name="right_panda_joint5" />
+    <joint name="right_panda_joint6" />
+    <joint name="right_panda_joint7" />
+    <joint name="right_panda_finger_joint1" />
+    <joint name="right_panda_finger_joint2" />
+  </group>
+
+  <end_effector name="left_gripper" parent_link="left_panda_hand" group="left_hand" parent_group="left_arm" />
+  <end_effector name="right_gripper" parent_link="right_panda_hand" group="right_hand" parent_group="right_arm" />
+
+  <xacro:panda_arm_disable_collisions prefix="left_panda_" />
+  <xacro:panda_arm_disable_collisions prefix="right_panda_" />
+  <xacro:panda_hand_disable_collisions prefix="left_panda_" />
+  <xacro:panda_hand_disable_collisions prefix="right_panda_" />
+</robot>
